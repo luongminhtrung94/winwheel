@@ -4,21 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+            crossorigin="anonymous">
     <title>Document</title>
 </head>
-<body>
-    <div class="canvas-container">
-        <canvas id='canvas' width='300' height='300'>
-            Canvas not supported, use another browser.
-        </canvas>
+<body class="lightsnow">
+    <div class="overlay">  
+        <div style="    
+                max-width: 200px;
+            margin: 20px;
+            position: fixed;">
+            <img src="https://appscyclone.com/templates/cyclone/images/apps-cyclone.png" alt="">
+        </div>
+        <div class="spin-container">
+            <div class="canvas-container">
+                <canvas id='canvas' width='600' height='600'>
+                    Canvas not supported, use another browser.
+                </canvas>
+            </div>
+            <button type="button" id="spin">
+                <img src="./assets/images/gift.png" alt="">
+                <!-- Click To Spin -->
+            </button>
+        </div>
     </div>
-    <button type="button" id="spin">
-        Spin
-    </button>
+    <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button> -->
+
+
+
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- <img style="top: -150px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);" src="https://www.clipartmax.com/png/middle/186-1868510_a-funny-christmas-santa-and-reindeer-cartoon-png-5000-christmas-art-reindeer.png" alt=""> -->
+                <div class="modal-body">
+                    <!-- <img src="http://pngimg.com/uploads/santa_claus/santa_claus_PNG38466.png" alt=""> -->
+                </div>
+                <!-- <div class="modal-footer" style="text-align: center">
+                    <button type="button" class="btn btn-primary">Action</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="santa">
+        <img style="width:100%" src="https://vignette.wikia.nocookie.net/icarly/images/5/51/Animated-santa-reindeer.gif/revision/latest?cb=20111125195748" alt="">
+    </div>
+
+    <div class="snow" style="display: block"></div>
+    <div style="    position: absolute;
+    height: 100vh;
+    width: 100%;">
+        <img style="width: 100%;
+    height: 100vh;" src="http://www.alc.edu/wp-content/uploads/2017/11/xmas-white-backgrounds-wallpapers.jpg" alt="">
+    </div>
+
+    <!-- img -->
+    <!-- http://accessutilitiesuk.com/wp-content/uploads/2016/12/Xmas-BG.jpg -->
+    <!-- https://www.riegsecker.com/assets/images/riegsecker/layout/bg-christmas.jpg -->
+
+    <audio controls autoplay="true" loop style="display: none;
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        z-index: 99999999;
+        right: 0;">
+        <source src="http://themeenergy.com/themes/html/holiday-greetings/media/christmas.ogg" type="audio/ogg">
+        <source src="http://themeenergy.com/themes/html/holiday-greetings/media/christmas.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="winsound">
+        <source src="http://themeenergy.com/themes/html/holiday-greetings/media/christmas.ogg" type="audio/ogg">
+        <source src="http://themeenergy.com/themes/html/holiday-greetings/media/christmas.mp3" type="audio/mpeg">
+    </audio>
 
     <script src="./assets/lib/jquery-3.3.1.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    
     <script src="./assets/lib/Winwheel.min.js"></script>
     <script src="./assets/lib/TweenMax.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
     <script src="./scripts/main.js"></script>
 </body>
 </html>

@@ -1,17 +1,135 @@
-.canvas-container{
+@import "./theme/style.scss";
+@import "./theme/theme1.scss";
+body {
+    // background-image: url('https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/PZSxGIZ/christmas-retro-bg-2_ny209mfxx__F0000.png');
+    // background-image: url('../assets/images/bg.jpg');
+    background-size: cover
+}
+
+.canvas-container {
     position: relative;
     display: inline-block;
-    padding-top:25px;
-    &::before{
-        content:"";
+    padding-top: 25px;
+    &::before {
+        content: "";
         position: absolute;
-        top:0;
-        left:50%;
+        top: 0;
+        left: 50%;
         transform: translate(-50%, 0);
         width: 0;
         height: 0;
         border-left: 30px solid transparent;
         border-right: 30px solid transparent;
-        border-top: 50px solid #000;
+        border-top: 50px solid #ffe000;
+        border-radius: 50%;
+    }
+}
+
+.spin-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+#spin {
+    position: absolute;
+    top: 50%;
+    left: 50%; // transform: translate(-50%, -50%);
+    background: transparent;
+    border: none;
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+    outline: none
+}
+
+img {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.santa {
+    position: absolute;
+    right: 0;
+    width: 300px;
+    z-index: 2;
+    bottom: 20px;
+    -webkit-animation: santa_animate 6s linear infinite;
+    -moz-animation: santa_animate 6s linear infinite;
+    -o-animation: santa_animate 6s linear infinite;
+    -ms-animation: santa_animate 6s linear infinite;
+    animation: santa_animate 6s linear infinite;
+}
+
+@-webkit-keyframes santa_animate {
+    0% {
+        right: 0
+    }
+    100% {
+        left: 0;
+    }
+}
+
+@-moz-keyframes santa_animate {
+    0% {
+        right: 0
+    }
+    100% {
+        left: 0;
+    }
+}
+
+@keyframes santa_animate {
+    0% {
+        right: 0
+    }
+    10% {
+        right: 10%
+    }
+    20% {
+        right: 20%
+    }
+    30% {
+        right: 30%
+    }
+    40% {
+        right: 40%
+    }
+    50% {
+        right: 50%
+    }
+    60% {
+        right: 60%
+    }
+    70% {
+        right: 70%
+    }
+    80% {
+        right: 80%
+    }
+    90% {
+        right: 90%
+    }
+    100% {
+        right: 100%;
+    }
+}
+
+.modal-content {
+    border-radius: 0;
+    background-image: url('../assets/images/santas_prize_wheel_homeslide_2017_0.png');
+    background-size: cover;
+    background-color: #fff;
+    height: 440px;
+    img {
+        max-width: 200px;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 660px;
+        margin: 160px auto;
     }
 }

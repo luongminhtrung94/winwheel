@@ -71,7 +71,7 @@ module.exports = {
 			{ test: /\.(scss|css)?$/, loader: ExtractTextPlugin.extract({
 					publicPath:"/",
 					fallback: 'style-loader',
-					use: ['css-loader', 'sass-loader', 'import-glob-loader']
+				use: ['css-loader?url=false', 'sass-loader', 'import-glob-loader']
 				})
 			},
 			{ 
