@@ -116,6 +116,12 @@ img {
     }
 }
 
+.logo {
+    max-width: 200px;
+    margin: 20px;
+    position: fixed;
+}
+
 .modal-content {
     border-radius: 0;
     background-image: url('../assets/images/santas_prize_wheel_homeslide_2017_0.png');
@@ -127,9 +133,56 @@ img {
     }
 }
 
+.modal-body {
+    height: 100%;
+    .person-successful {
+        top: 50%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 35px;
+        width: 100%;
+    }
+}
+
 @media (min-width: 768px) {
     .modal-dialog {
         width: 660px;
-        margin: 160px auto;
+        margin: 120px auto;
     }
 }
+
+.accept-action {
+    background-image: url('../assets/images/button.png');
+    background-size: contain;
+    width: 215px;
+    height: 80px;
+    position: absolute;
+    z-index: 2;
+    border: none;
+    background-color: transparent;
+    bottom: -82px;
+    color: #fff;
+    font-size: 21px;
+    line-height: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.christmas-bg {
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    img {
+        width: 100%;
+        height: 100vh;
+    }
+}
+
+// .canvas-container {
+//     // background-image: url('http://www.twinzee.fr/wp-content/plugins/winwheel4wp/assets/wheel.png');
+//     background-image: url('../assets/images/border.png');
+//     background-repeat: no-repeat;
+//     background-position: center;
+//     background-size: cover
+// }

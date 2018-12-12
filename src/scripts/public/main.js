@@ -170,39 +170,38 @@ var arrItem = [
 ];
 
 var theWheel;
+
 function fn_listCheckIn() {
-    $.ajax(' https://appscyclone.com/xmas/index.php/api/list-checkin',
+    $.ajax(' https://appscyclone.com/xmas/index.php/api/list-normal-price',
         {
             dataType: 'json', // type of response data
-            success: function (data, status, xhr) {   // success callback function
-                // console.log(data)
-                // return data;
-
+            success: function (data) {   // success callback function
+                console.log(data.data)
                 getSegments(data.data);
 
                 theWheel = new Winwheel({
                     'canvasId': 'canvas',
                     'numSegments': data.data.length,
                     'segments': getSegments(data.data),
-                    'strokeStyle': 'white',
-                    'lineWidth': 3,
-                    'textAlignment': 'outer',
+                    // 'strokeStyle': 'red',
+                    'textMargin': 15,
+                    'lineWidth': 0,
+                    'textAlignment': 'center',
                     'innerRadius': 150,
                     'animation':                   // Note animation properties passed in constructor parameters.
                     {
                         // 'type': 'spinOngoing',
-                        // 'repeat': -1,
-                        // 'yoyo': false,
-                        // 'easing': 'Linear.easeNone',
+                        // 'easing'       : 'Linear.easeNone',
+                        // 'direction'    : 'clockwise',
+                        // 'repeat'       : -1,
+                        // 'yoyo'         : true,
                         'type': 'spinToStop',  // Type of animation.
-                        'duration': 20,             // How long the animation is to take in seconds.
-                        'spins': 20,              // The number of complete 360 degree rotations the wheel is to do.
+                        'duration': 10,             // How long the animation is to take in seconds.
+                        'spins': 40,              // The number of complete 360 degree rotations the wheel is to do.
                         'callbackFinished': 'winAnimation()',
                         'callbackAfter': 'drawColourTriangle()',
                     }
-
                 });
-                
             },
             error: function (jqXhr, textStatus, errorMessage) { // error callback 
                 console.log(errorMessage)
@@ -211,93 +210,129 @@ function fn_listCheckIn() {
 }
 
 fn_listCheckIn();
-
+function compareNumbers(a, b) {
+    return a - b;
+}
 function getSegments(data) {
 
     var segments = [];
     arrItem = data;
-    
-    if (arrItem){
-        console.log('Data success:', arrItem)
-       
+
+    if (arrItem) {
+        // console.log('Data success:', arrItem);
+
         arrItem.forEach(function (item) {
+            arrItem.sort(function (a, b) {
+                return a.lucky_number - b.lucky_number;
+            });
             segments.push({
                 id: item.id,
-                text: item.lucky_number.toString()
+                text: item.lucky_number.toString(),
+                name: item.name
             })
         });
 
-        for(var i=0; i < segments.length; i++){
-            if(i%2){
+        for (var i = 0; i < segments.length; i++) {
+            if (i % 2) {
                 segments[i].fillStyle = 'red'
-            }else{
+            } else {
                 segments[i].fillStyle = 'white'
             }
         }
-        return segments ;
+
+        // console.log(segments);
+
+        return segments;
     }
 
 }
 
+function calculatePrize() {
+    var stopAt = theWheel.getRandomForSegment(1);
+    theWheel.animation.stopAngle = stopAt;
+    theWheel.stopAnimation(false);
+    theWheel.rotationAngle = 0;
+}
 
-// Get the audio with the sound it in, then play.
-// var winsound = document.getElementById('winsound');
-
+var status = 0;
 $("#spin").on("click", function () {
 
     theWheel.stopAnimation(false);
     theWheel.rotationAngle = 0;
 
-    $(this).attr("disabled", true)
+    $(this).attr('disabled')
+
     theWheel.startAnimation();
 
-
-    console.log('Đang quay');
-
-    // winsound.play();
-
-});
-$('#exampleModal').modal('show');
-// This function called after the spin animation has stopped.
-function winAnimation() {
-   
-    console.log('Đã dừng');
-    $('#exampleModal').modal('show');
-
-
-    // Get the number of the winning segment.
-    var winningSegmentNumber = theWheel.getIndicatedSegmentNumber();
-
-    $("#spin").attr("disabled", false);
-
-    // Loop and set fillStyle of all segments to gray.
-    // for (var x = 1; x < theWheel.segments.length; x++) {
-    //     theWheel.segments[x].fillStyle = 'gray';
+    // status ++;
+    // if(status % 2){    
+    //     theWheel.startAnimation();
+        
+    // }else{
+    //     theWheel.stopAnimation(false);
+    //     theWheel.rotationAngle = 0;
     // }
 
-    // Make the winning one yellow.
-    theWheel.segments[winningSegmentNumber].fillStyle = 'yellow';
+});
 
 
+// This function called after the spin animation has stopped.
+function winAnimation() {
 
+    // Get the number of the winning segment.
+    var segmentCurrent = theWheel.getIndicatedSegmentNumber();
     var segment = theWheel.getIndicatedSegment();
-    // alert("the winner is :" + segment.text);
 
-    // theWheel.deleteSegment(theWheel.getIndicatedSegmentNumber());
+    $("#spin").attr("disabled", false);
+    $('#exampleModal').modal({ backdrop: 'static', keyboard: false, display: 'show' });
 
+    // Make the winning one yellow.
+    theWheel.segments[segmentCurrent].fillStyle = 'yellow';
     
-    // winsound.pause();
-    // winsound.currentTime = 0;
+    
+    console.log("id:" + segment.id, 'lucky_number:'+ segment.text);
+    $('.person-successful').html(segment.name)
 
 
+    $('.accept-action').click(function () {
+        $('#exampleModal').modal('hide');
         
+    })
+
+    // delete item
+    theWheel.deleteSegment(segmentCurrent);
+
+    $('.del_form input').val(segment.id);
+    var id_del = $('.del_form').serialize();
+    fn_delete(id_del);
+
+    setTimeout(() => {
+        fn_listCheckIn();
+    }, 100);
 
     // Call draw function to render changes.
     theWheel.draw();
 
     // Also re-draw the pointer, otherwise it disappears.
     drawColourTriangle();
-   
+
+}
+
+
+function fn_delete(id_del) {
+
+    $.ajax('https://appscyclone.com/xmas/index.php/api/win',
+        {
+            dataType: 'json', // type of response data
+            type:'POST',
+            data: id_del,
+            success: function (data) {   // success callback function
+                // console.log(data);
+            },
+            error: function (jqXhr, textStatus, errorMessage) { // error callback 
+                console.log(errorMessage)
+            }
+        });
 }
 
 // Draw pointer on canvas, this time on the right.
@@ -320,4 +355,3 @@ function drawColourTriangle() {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
-
