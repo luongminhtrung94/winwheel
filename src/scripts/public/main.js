@@ -191,15 +191,16 @@ function fn_listCheckIn() {
                     'textFillStyle': '#000',
                     'animation':                   // Note animation properties passed in constructor parameters.
                     {
-                        // 'type': 'spinOngoing',
-                        // 'easing'       : 'Linear.easeNone',
-                        // 'direction'    : 'clockwise',
-                        // 'repeat'       : -1,
-                        // 'yoyo'         : true,
-                        'type': 'spinToStop',  // Type of animation.
+                        'type': 'spinOngoing',
+                        'easing'       : 'Linear.easeNone',
+                        'repeat'       : -1,
+                        'yoyo'         : true,
+
+
+                        // 'type': 'spinToStop',  // Type of animation.
                         'duration': 5,             // How long the animation is to take in seconds.
-                        'spins': 40,              // The number of complete 360 degree rotations the wheel is to do.
-                        'callbackFinished': 'winAnimation()',
+                        'spins': 100,              // The number of complete 360 degree rotations the wheel is to do.
+                        // 'callbackFinished': 'winAnimation()',
                         'callbackAfter': 'drawColourTriangle()',
                     }
                 });
@@ -256,49 +257,41 @@ function calculatePrize() {
 var status = 0;
 $("#spin").on("click", function (e) {
 
-    theWheel.stopAnimation(false);
-    theWheel.rotationAngle = 0;
-    $(this).attr('disabled')
-    theWheel.startAnimation();
 
-    // status ++;
-    // if(status % 2){    
-    //     theWheel.startAnimation();
+    // normal -----------------------------------------------
+    // theWheel.stopAnimation(false);
+    // theWheel.rotationAngle = 0;
+    // $(this).attr('disabled')
+    // theWheel.startAnimation();
+
+
+    // when click start/stop---------------------------------
+    status ++;
+    if(status % 2){    
+        theWheel.startAnimation();
         
-    // }else{
-    //     theWheel.stopAnimation(false);
-    //     theWheel.rotationAngle = 0;
-    // }
+    }else{
+        theWheel.stopAnimation(true);
+        winAnimation();
+    }
 
 });
 
-var canvas = $('#canvas');
-
-// Specify click handler for canvas.
-$('#canvas').click(function(e){
-    // Call the getSegmentAt function passing the mouse x and y from the event.
-    var clickedSegment = theWheel.getSegmentAt(e.clientX, e.clientY);
-
-    // A pointer to the segment clicked is returned if the user clicked inside the wheel.
-    if (clickedSegment) {
-        // Change background colour of the segment and update the wheel.
-        clickedSegment.fillStyle = 'blue';
-        theWheel.draw();
-
-        console.log('when click item:',clickedSegment.text)
-    }
-}) 
 
 
 // This function called after the spin animation has stopped.
 function winAnimation() {
 
+    console.log('winAnimation')
+
+
+
+
     // Get the number of the winning segment.
     var segmentCurrent = theWheel.getIndicatedSegmentNumber();
     var segment = theWheel.getIndicatedSegment();
 
-    $("#spin").attr("disabled", false);
-    $('#exampleModal').modal({ backdrop: 'static', keyboard: false, display: 'show' });
+    // $('#exampleModal').modal({ backdrop: 'static', keyboard: false, display: 'show' });
 
     // Make the winning one yellow.
     theWheel.segments[segmentCurrent].fillStyle = 'yellow';
@@ -310,19 +303,19 @@ function winAnimation() {
 
     $('.accept-action').click(function () {
         $('#exampleModal').modal('hide');
-        
     })
 
     // delete item
     theWheel.deleteSegment(segmentCurrent);
+    
 
     $('.del_form input').val(segment.id);
     var id_del = $('.del_form').serialize();
     fn_delete(id_del);
 
-    setTimeout(() => {
-        fn_listCheckIn();
-    }, 100);
+    // setTimeout(() => {
+    //     fn_listCheckIn();
+    // }, 100);
 
     // Call draw function to render changes.
     theWheel.draw();
@@ -369,3 +362,16 @@ function drawColourTriangle() {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
+
+
+// click other item on canvas
+// $('#canvas').click(function (e) {
+//     var clickedSegment = theWheel.getSegmentAt(e.clientX, e.clientY);
+
+//     if (clickedSegment) {
+//         clickedSegment.fillStyle = 'blue';
+//         theWheel.draw();
+
+//         console.log('when click item:', clickedSegment.text)
+//     }
+// }) 
