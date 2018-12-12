@@ -180,9 +180,25 @@ img {
 }
 
 // .canvas-container {
-//     // background-image: url('http://www.twinzee.fr/wp-content/plugins/winwheel4wp/assets/wheel.png');
-//     background-image: url('../assets/images/border.png');
-//     background-repeat: no-repeat;
+//     background-image: url('http://dougtesting.net//elements/images/examples/wheel_back.png');
 //     background-position: center;
-//     background-size: cover
+//     background-repeat: no-repeat;
+//     height: 500px;
+//     width: 500px;
 // }
+
+canvas {
+    border: 10px #fdfdfa; // background: #fff;
+    border-style: solid;
+    border-radius: 50%;
+    -webkit-box-shadow: -3px 1px 15px 2px #000000;
+    box-shadow: -1px 1px 11px 1px #000000;
+}
+
+.foot-wheel {
+    position: absolute;
+    bottom: -75px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+}

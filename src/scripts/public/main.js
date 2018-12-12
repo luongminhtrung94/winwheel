@@ -172,7 +172,7 @@ var arrItem = [
 var theWheel;
 
 function fn_listCheckIn() {
-    $.ajax(' https://appscyclone.com/xmas/index.php/api/list-normal-price',
+    $.ajax(' https://appscyclone.com/xmas/index.php/api/list-checkin',
         {
             dataType: 'json', // type of response data
             success: function (data) {   // success callback function
@@ -183,11 +183,12 @@ function fn_listCheckIn() {
                     'canvasId': 'canvas',
                     'numSegments': data.data.length,
                     'segments': getSegments(data.data),
-                    // 'strokeStyle': 'red',
+                    'strokeStyle': 'red',
                     'textMargin': 15,
                     'lineWidth': 0,
                     'textAlignment': 'center',
-                    'innerRadius': 150,
+                    'innerRadius': 120,
+                    'textFillStyle': '#000',
                     'animation':                   // Note animation properties passed in constructor parameters.
                     {
                         // 'type': 'spinOngoing',
@@ -196,7 +197,7 @@ function fn_listCheckIn() {
                         // 'repeat'       : -1,
                         // 'yoyo'         : true,
                         'type': 'spinToStop',  // Type of animation.
-                        'duration': 10,             // How long the animation is to take in seconds.
+                        'duration': 5,             // How long the animation is to take in seconds.
                         'spins': 40,              // The number of complete 360 degree rotations the wheel is to do.
                         'callbackFinished': 'winAnimation()',
                         'callbackAfter': 'drawColourTriangle()',
@@ -208,6 +209,7 @@ function fn_listCheckIn() {
             }
         });
 }
+
 
 fn_listCheckIn();
 function compareNumbers(a, b) {
@@ -248,20 +250,15 @@ function getSegments(data) {
 }
 
 function calculatePrize() {
-    var stopAt = theWheel.getRandomForSegment(1);
-    theWheel.animation.stopAngle = stopAt;
-    theWheel.stopAnimation(false);
-    theWheel.rotationAngle = 0;
+    
 }
 
 var status = 0;
-$("#spin").on("click", function () {
+$("#spin").on("click", function (e) {
 
     theWheel.stopAnimation(false);
     theWheel.rotationAngle = 0;
-
     $(this).attr('disabled')
-
     theWheel.startAnimation();
 
     // status ++;
@@ -274,6 +271,23 @@ $("#spin").on("click", function () {
     // }
 
 });
+
+var canvas = $('#canvas');
+
+// Specify click handler for canvas.
+$('#canvas').click(function(e){
+    // Call the getSegmentAt function passing the mouse x and y from the event.
+    var clickedSegment = theWheel.getSegmentAt(e.clientX, e.clientY);
+
+    // A pointer to the segment clicked is returned if the user clicked inside the wheel.
+    if (clickedSegment) {
+        // Change background colour of the segment and update the wheel.
+        clickedSegment.fillStyle = 'blue';
+        theWheel.draw();
+
+        console.log('when click item:',clickedSegment.text)
+    }
+}) 
 
 
 // This function called after the spin animation has stopped.
@@ -290,7 +304,7 @@ function winAnimation() {
     theWheel.segments[segmentCurrent].fillStyle = 'yellow';
     
     
-    console.log("id:" + segment.id, 'lucky_number:'+ segment.text);
+    console.log("id:" + segment.id, 'lucky_number:'+ segment.text, 'Name:'+segment.name);
     $('.person-successful').html(segment.name)
 
 
