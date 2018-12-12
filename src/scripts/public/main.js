@@ -172,7 +172,7 @@ var arrItem = [
 var theWheel;
 
 function fn_listCheckIn() {
-    $.ajax(' https://appscyclone.com/xmas/index.php/api/list-checkin',
+    $.ajax(' https://appscyclone.com/xmas/index.php/api/list-normal-price',
         {
             dataType: 'json', // type of response data
             success: function (data) {   // success callback function
@@ -186,7 +186,8 @@ function fn_listCheckIn() {
                     'strokeStyle': 'red',
                     'textMargin': 15,
                     'lineWidth': 0,
-                    'textAlignment': 'center',
+                    'textAlignment': 'outer',
+                    // 'rotationAngle':0,
                     'innerRadius': 120,
                     'textFillStyle': '#000',
                     'animation':                   // Note animation properties passed in constructor parameters.
@@ -194,12 +195,11 @@ function fn_listCheckIn() {
                         'type': 'spinOngoing',
                         'easing'       : 'Linear.easeNone',
                         'repeat'       : -1,
-                        'yoyo'         : true,
 
 
                         // 'type': 'spinToStop',  // Type of animation.
-                        'duration': 5,             // How long the animation is to take in seconds.
-                        'spins': 100,              // The number of complete 360 degree rotations the wheel is to do.
+                        'duration': 1,             // How long the animation is to take in seconds.
+                        'spins': data.data.length,              // The number of complete 360 degree rotations the wheel is to do.
                         // 'callbackFinished': 'winAnimation()',
                         'callbackAfter': 'drawColourTriangle()',
                     }
@@ -272,50 +272,41 @@ $("#spin").on("click", function (e) {
         
     }else{
         theWheel.stopAnimation(true);
-        winAnimation();
+        $('#exampleModal').modal({ backdrop: 'static', keyboard: false, display: 'show' });
+
+
+        // Get the number of the winning segment.
+        var segmentCurrent = theWheel.getIndicatedSegmentNumber();
+        var segment = theWheel.getIndicatedSegment();
+
+
+        // Make the winning one yellow.
+        theWheel.segments[segmentCurrent].fillStyle = 'yellow';
+
+        $('.person-successful').html(segment.name);
+        
+        console.log("\nid:" + segment.id, '\n lucky_number:' + segment.text, '\n Name:' + segment.name);
     }
 
 });
 
 
 
-// This function called after the spin animation has stopped.
-function winAnimation() {
-
-    console.log('winAnimation')
-
-
-
-
-    // Get the number of the winning segment.
+$('.accept-action').click(function () {
     var segmentCurrent = theWheel.getIndicatedSegmentNumber();
     var segment = theWheel.getIndicatedSegment();
 
-    // $('#exampleModal').modal({ backdrop: 'static', keyboard: false, display: 'show' });
-
-    // Make the winning one yellow.
-    theWheel.segments[segmentCurrent].fillStyle = 'yellow';
-    
-    
-    console.log("id:" + segment.id, 'lucky_number:'+ segment.text, 'Name:'+segment.name);
-    $('.person-successful').html(segment.name)
-
-
-    $('.accept-action').click(function () {
-        $('#exampleModal').modal('hide');
-    })
-
     // delete item
     theWheel.deleteSegment(segmentCurrent);
-    
+
 
     $('.del_form input').val(segment.id);
     var id_del = $('.del_form').serialize();
     fn_delete(id_del);
 
-    // setTimeout(() => {
-    //     fn_listCheckIn();
-    // }, 100);
+    setTimeout(() => {
+        fn_listCheckIn();
+    }, 100);
 
     // Call draw function to render changes.
     theWheel.draw();
@@ -323,11 +314,10 @@ function winAnimation() {
     // Also re-draw the pointer, otherwise it disappears.
     drawColourTriangle();
 
-}
-
+    $('#exampleModal').modal('hide');
+})
 
 function fn_delete(id_del) {
-
     $.ajax('https://appscyclone.com/xmas/index.php/api/win',
         {
             dataType: 'json', // type of response data
